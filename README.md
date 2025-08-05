@@ -2,45 +2,83 @@
 
 <!-- Badges -->
 
-![Go](https://img.shields.io/badge/Go-1.22+-00ADD8?logo=go)
-![Redis](https://img.shields.io/badge/Redis-DC382D?logo=redis)
-![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker)
-![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?logo=prometheus)
-![Grafana](https://img.shields.io/badge/Grafana-F46800?logo=grafana)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/salgue441/task-queue)](https://golang.org)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/salgue441/task-queue/ci.yml)](https://github.com/salgue441/task-queue/actions)
+[![Code Coverage](https://img.shields.io/codecov/c/github/salgue441/task-queue)](https://codecov.io/gh/salgue441/task-queue)
 
 A high-performance distributed task queue system built with Go, featuring worker pools, priority queues, and full observability.
 
 ## 🌟 Features
 
-- **Distributed Architecture**: Microservices with clear separation of concerns
-- **Multi-priority Queues**: Urgent/high/medium/low priority job handling
-- **Resilient Processing**:
-  - Exponential backoff retries
-  - Dead letter queue for failed jobs
-  - Circuit breakers for dependencies
-- **Observability**:
-  - Prometheus metrics endpoint
-  - Grafana dashboards
-  - Distributed tracing with Jaeger
-- **Scalable**: Horizontally scalable worker pools
-- **Modern Stack**:
-  - gRPC for inter-service communication
-  - Redis/RabbitMQ for queue management
-  - PostgreSQL for persistence
+### 🚀 Core Capabilities
+
+- **Distributed Task Processing**: Horizontally scalable architecture with auto-discovery
+- **Multi-Priority Queues**:
+  - 🚨 Urgent (real-time)
+  - 🔥 High
+  - ⏳ Medium
+  - 🐢 Low
+- **Dynamic Worker Pools**: Automatic scaling based on queue depth and system load
+
+### 🔄 Resilience
+
+- **Intelligent Retries**: Exponential backoff with jitter algorithm
+- **Dead Letter Queues**: Automatic quarantine for failed jobs with manual replay
+- **Circuit Breakers**: Automatic service degradation for dependencies
+- **Exactly-Once Processing**: Deduplication via idempotency keys
+
+### 📊 Observability
+
+- **Real-time Metrics**:
+  - Prometheus endpoint with custom exporters
+  - Grafana dashboards pre-configured
+- **Distributed Tracing**: Jaeger/Zipkin integration with context propagation
+- **Structured Logging**: Loki/ELK compatible JSON logs with correlation IDs
+
+### ⚡ Modern Integrations
+
+- **Protocol Support**:
+  - gRPC (high-performance)
+  - REST/Webhooks (compatibility)
+  - WebSockets (real-time updates)
+- **Storage Backends**:
+  - Redis Streams
+  - RabbitMQ
+  - PostgreSQL (for persistent queues)
+  - S3/GCS (for large payloads)
+
+### 🔐 Enterprise Ready
+
+- **Security**:
+  - TLS/mTLS encryption
+  - OAuth2/JWT authentication
+  - Payload encryption at rest
+- **Multi-Cloud**:
+  - Kubernetes operator included
+  - Terraform modules for AWS/GCP/Azure
+  - Helm charts for easy deployment
+
+### 🌱 Eco-System
+
+- **Web UI**: Management console with queue visualization
+- **CLI Tool**: `taskctl` for administration
+- **WebAssembly Workers**: Edge computing support
+- **Plugin System**: Custom processors via Go/Wasm plugins
 
 ## 🏗️ Architecture
 
 ```mermaid
-graph TD
-    A[Client] -->|Submit Job| B(API Gateway)
-    B -->|Queue Job| C[Queue Manager]
-    C -->|Persist| D[(PostgreSQL)]
-    C -->|Dispatch| E[Worker Pool]
-    E -->|Process| F[Storage Service]
-    E -->|Metrics| G[Monitor Service]
+graph LR
+    A[Client] -->|gRPC/HTTP| B[API Gateway]
+    B -->|Async Events| C[(Message Broker)]
+    C --> D[Worker Pool]
+    D -->|Retries| C
+    D --> E[(PostgreSQL)]
+    D --> F[(S3 Storage)]
+    B --> G[Monitoring]
     G --> H[(Prometheus)]
     G --> I[(Grafana)]
-    G --> J[(Jaeger)]
+    G --> J[(Loki)]
 ```
 
 ## 🚀 Getting Started
