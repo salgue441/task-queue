@@ -3,6 +3,7 @@ package storage
 import (
 	"context"
 	"database/sql"
+	"task-queue/internal/models"
 	"task-queue/pkg/errors"
 	"task-queue/pkg/logger"
 
@@ -73,4 +74,3 @@ func (r *JobRepository) Get(ctx context.Context, id uuid.UUID) (*models.Job, err
 
 	return &job, nil
 }
-

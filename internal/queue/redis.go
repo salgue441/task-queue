@@ -53,8 +53,8 @@ func (q *RedisQueue) Enqueue(ctx context.Context, job *models.Job) error {
 	}
 
 	queueKey := q.getQueueKey(job.Priority)
-	if job.ScheduleAt != nil && job.ScheduleAt.After(time.Now()) {
-		score := float64(job.ScheduleAt.Unix())
+	if job.ScheduledAt != nil && job.ScheduledAt.After(time.Now()) {
+		score := float64(job.ScheduledAt.Unix())
 		err = q.client.ZAdd(ctx, q.getDelayedKey(), redis.Z{
 			Score:  score,
 			Member: data,
